@@ -2,7 +2,6 @@ package com.albanfontaine.moodtracker;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.view.View;
 public class OnSlidingTouchListener implements View.OnTouchListener {
     private GestureDetector gestureDetector;
 
-    public OnSlidingTouchListener(Context context){
+    protected OnSlidingTouchListener(Context context){
         gestureDetector = new GestureDetector(context, new GestureListener());
     }
 
@@ -33,37 +32,20 @@ public class OnSlidingTouchListener implements View.OnTouchListener {
         }
 
         @Override
-        public void onLongPress(MotionEvent e) {
-            onLongClick();
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             try {
                 float deltaY = e2.getY() - e1.getY();
-                float deltaX = e2.getX() - e1.getX();
 
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    if (Math.abs(deltaX) > SLIDE_THRESHOLD) {
-                        if (deltaX > 0) {
-                            // the user made a sliding right gesture
-                            return onSlideRight();
-                        } else {
-                            // the user made a sliding left gesture
-                            return onSlideLeft();
-                        }
-                    }
-                } else {
-                    if (Math.abs(deltaY) > SLIDE_THRESHOLD) {
-                        if (deltaY > 0) {
-                            // the user made a sliding down gesture
-                            return onSlideDown();
-                        } else {
-                            // the user made a sliding up gesture
-                            return onSlideUp();
-                        }
+                if (Math.abs(deltaY) > SLIDE_THRESHOLD) {
+                    if (deltaY > 0) {
+                        // the user made a sliding down gesture
+                        return onSlideDown();
+                    } else {
+                        // the user made a sliding up gesture
+                        return onSlideUp();
                     }
                 }
+
             } catch (Exception exception) {
                 Log.e(TAG, exception.getMessage());
             }
@@ -72,18 +54,6 @@ public class OnSlidingTouchListener implements View.OnTouchListener {
         }
     }
     public boolean onClick() {
-        return false;
-    }
-
-    public boolean onLongClick() {
-        return false;
-    }
-
-    public boolean onSlideRight() {
-        return false;
-    }
-
-    public boolean onSlideLeft() {
         return false;
     }
 
