@@ -2,7 +2,6 @@ package com.albanfontaine.moodtracker.model;
 
 public class Mood {
     private int mMood;
-    private int mColor;
     private String mComment;
 
     // Getters and setters
@@ -12,12 +11,6 @@ public class Mood {
     public void setMood(int mood) {
         mMood = mood;
     }
-    public int getColor() {
-        return mColor;
-    }
-    public void setColor(int color) {
-        mColor = color;
-    }
     public String getComment() {
         return mComment;
     }
@@ -26,13 +19,11 @@ public class Mood {
     }
 
     // Constructors
-    public Mood(int mood, int color){
+    public Mood(int mood){
         this.mMood = mood;
-        this.mColor = color;
     }
-    public Mood(int mood, int color, String comment){
+    public Mood(int mood, String comment){
         this.mMood = mood;
-        this.mColor = color;
         this.mComment = comment;
     }
 }
