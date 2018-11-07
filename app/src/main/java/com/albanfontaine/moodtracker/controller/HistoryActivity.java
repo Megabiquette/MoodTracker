@@ -2,6 +2,7 @@ package com.albanfontaine.moodtracker.controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import com.albanfontaine.moodtracker.R;
 
 public class HistoryActivity extends AppCompatActivity {
