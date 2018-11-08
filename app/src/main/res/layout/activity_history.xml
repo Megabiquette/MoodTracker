@@ -6,8 +6,8 @@
     android:orientation="vertical"
     tools:context=".controller.HistoryActivity">
 
-    <LinearLayout
-        android:id="@+id/activity_history_one_week"
+    <RelativeLayout
+        android:id="@+id/activity_history_layout_O"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="75dp"
@@ -20,10 +20,20 @@
             android:layout_margin="5dp"
             android:text="Il y a une semaine"
             android:textStyle="bold" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/activity_history_6_days"
+        <ImageView
+            android:id="@+id/activity_history_com_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_history_layout_1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="75dp"
@@ -34,12 +44,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a 6 jours"
+            android:text="Il y a une semaine"
             android:textStyle="bold" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/activity_history_5_days"
+        <ImageView
+            android:id="@+id/activity_history_com_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_history_layout_2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="75dp"
@@ -50,12 +70,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a 5 jours"
+            android:text="Il y a une semaine"
             android:textStyle="bold" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/activity_history_4_jours"
+        <ImageView
+            android:id="@+id/activity_history_com_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_history_layout_3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="75dp"
@@ -66,12 +96,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a 4 jours"
+            android:text="Il y a une semaine"
             android:textStyle="bold" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/activity_history_3_jours"
+        <ImageView
+            android:id="@+id/activity_history_com_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_history_layout_4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="75dp"
@@ -82,12 +122,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a 3 jours"
+            android:text="Il y a une semaine"
             android:textStyle="bold" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/activity_history_2_days"
+        <ImageView
+            android:id="@+id/activity_history_com_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_history_layout_5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="75dp"
@@ -98,12 +148,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Avant hier"
+            android:text="Il y a une semaine"
             android:textStyle="bold" />
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/activity_history_yesterday"
+        <ImageView
+            android:id="@+id/activity_history_com_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/activity_history_layout_6"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginEnd="75dp"
@@ -114,8 +174,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Hier"
+            android:text="Il y a une semaine"
             android:textStyle="bold" />
-    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/activity_history_com_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_comment_black_48px"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            />
+    </RelativeLayout>
 
 </LinearLayout>
