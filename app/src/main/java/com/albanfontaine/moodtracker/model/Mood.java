@@ -19,9 +19,6 @@ public class Mood {
     }
 
     // Constructors
-    public Mood(int mood){
-        this.mMood = mood;
-    }
     public Mood(int mood, String comment){
         this.mMood = mood;
         this.mComment = comment;

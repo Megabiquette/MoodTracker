@@ -17,6 +17,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".controller.HistoryActivity"></activity>
+
+        <receiver android:name=".HistoryUpdateBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

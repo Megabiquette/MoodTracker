@@ -1,8 +1,12 @@
 package com.albanfontaine.moodtracker.controller;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,10 +15,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.albanfontaine.moodtracker.HistoryUpdateBroadcastReceiver;
 import com.albanfontaine.moodtracker.OnSlidingTouchListener;
 import com.albanfontaine.moodtracker.R;
 import com.albanfontaine.moodtracker.model.Mood;
 import com.google.gson.Gson;
+
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private RelativeLayout mBackground;
@@ -23,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView mHistory;
     private int mCurrentMood;
     private String mComment;
+    private int mNote;
+    private PendingIntent mPendingIntent;
+    private AlarmManager mAlarmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mHistory = (ImageView) findViewById(R.id.main_activity_history);
         mCurrentMood = 3;
         mComment = "";
+        mNote = R.raw.note3;
 
         mAddNote.setOnClickListener(this);
         mHistory.setOnClickListener(this);
@@ -48,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (mCurrentMood < 4){
                     mCurrentMood++;
                     changeMood();
+                    playSound();
                 }
                 return true;
             }
@@ -57,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (mCurrentMood > 0){
                     mCurrentMood--;
                     changeMood();
+                    playSound();
                 }
                 return true;
             }
@@ -68,11 +81,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Gson gson = new Gson();
             Mood mood = gson.fromJson(json, Mood.class);
             mCurrentMood = mood.getMood();
-            if(mood.getComment() != null){
-                mComment = mood.getComment();
-            }
+            mComment = mood.getComment();
             changeMood();
         }
+        updateHistory();
     }
 
     @Override
@@ -81,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (buttonClicked == 0) {
             final EditText editText = new EditText(this);
             editText.setHint("Votre commentaire");
+            if(!mComment.trim().equals("")){
+                editText.setText(mComment);
+                editText.setSelectAllOnFocus(true);
+            }
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Commentaire");
             alert.setMessage(mComment);
@@ -88,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alert.setPositiveButton("Valider", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(!editText.getText().toString().trim().equals(""))
+                    //if(!editText.getText().toString().trim().equals(""))
                         mComment = editText.getText().toString();
                 }
             });
@@ -105,35 +121,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 0:
                 mBackground.setBackgroundColor(getResources().getColor(R.color.faded_red));
                 mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_sad));
+                mNote = R.raw.note0;
                 break;
             case 1:
                 mBackground.setBackgroundColor(getResources().getColor(R.color.warm_grey));
                 mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_disappointed));
+                mNote = R.raw.note1;
                 break;
             case 2:
                 mBackground.setBackgroundColor(getResources().getColor(R.color.cornflower_blue_65));
                 mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_normal));
+                mNote = R.raw.note2;
                 break;
             case 3:
                 mBackground.setBackgroundColor(getResources().getColor(R.color.light_sage));
                 mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_happy));
+                mNote = R.raw.note3;
                 break;
             case 4:
                 mBackground.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
                 mSmiley.setImageDrawable(getResources().getDrawable(R.drawable.smiley_super_happy));
+                mNote = R.raw.note4;
                 break;
         }
     }
 
+    public void playSound(){
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, mNote);
+        mediaPlayer.start();
+    }
+
+    public void updateHistory(){
+        Intent updateIntent = new Intent(this, HistoryUpdateBroadcastReceiver.class);
+        mPendingIntent = PendingIntent.getBroadcast(this, 0, updateIntent, 0);
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Calendar midnightCalendar = Calendar.getInstance();
+        midnightCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        midnightCalendar.set(Calendar.MINUTE, 0);
+        midnightCalendar.set(Calendar.SECOND,0);
+        mAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                midnightCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mPendingIntent);
+    }
+
     @Override
     protected void onStop() {
-        Mood mood;
-        if(mComment.trim().equals("")){
-            mood = new Mood(mCurrentMood);
-        }else{
-            mood = new Mood(mCurrentMood, mComment);
-        }
-
+        Mood mood = new Mood(mCurrentMood, mComment);
         Gson gson = new Gson();
         String json = gson.toJson(mood);
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
