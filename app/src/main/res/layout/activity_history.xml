@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a une semaine"
+            android:text="Il y a 6 jours"
             android:textStyle="bold" />
 
         <ImageView
@@ -70,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a une semaine"
+            android:text="Il y a 5 jours"
             android:textStyle="bold" />
 
         <ImageView
@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a une semaine"
+            android:text="Il y a 4 jours"
             android:textStyle="bold" />
 
         <ImageView
@@ -122,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a une semaine"
+            android:text="Il y a 3 jours"
             android:textStyle="bold" />
 
         <ImageView
@@ -148,7 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a une semaine"
+            android:text="Avant-hier"
             android:textStyle="bold" />
 
         <ImageView
@@ -174,7 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="Il y a une semaine"
+            android:text="Hier"
             android:textStyle="bold" />
 
         <ImageView
