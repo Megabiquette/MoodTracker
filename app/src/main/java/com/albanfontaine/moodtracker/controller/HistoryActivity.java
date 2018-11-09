@@ -1,6 +1,5 @@
 package com.albanfontaine.moodtracker.controller;
 
-import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +11,13 @@ import android.widget.Toast;
 import com.albanfontaine.moodtracker.R;
 import com.albanfontaine.moodtracker.model.Mood;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class HistoryActivity extends AppCompatActivity implements View.OnClickListener{
-    private ArrayList<Mood> mMoodList = new ArrayList<Mood>();
+    private ArrayList<Mood> mMoodList;
     private RelativeLayout mMood0;
     private RelativeLayout mMood1;
     private RelativeLayout mMood2;
@@ -32,18 +33,16 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView mCom5;
     private ImageView mCom6;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
-        mMoodList.add(new Mood(4, ""));
-        mMoodList.add(new Mood(3, ""));
-        mMoodList.add(new Mood(4, "Super journée"));
-        mMoodList.add(new Mood(2, ""));
-        mMoodList.add(new Mood(0, "La cata"));
-        mMoodList.add(new Mood(3, ""));
-        mMoodList.add(new Mood(1, ""));
+        String moodList = (String) getIntent().getExtras().get("moodList");
+        Gson gson = new Gson();
+        Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
+        mMoodList = gson.fromJson(moodList, arrayType);
 
         mMood0 = findViewById(R.id.activity_history_layout_O);
         mMood1 = findViewById(R.id.activity_history_layout_1);
@@ -60,6 +59,8 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         mCom5 = findViewById(R.id.activity_history_com_5);
         mCom6 = findViewById(R.id.activity_history_com_6);
 
+
+
         // Setting up the listeners, tags, visibility of comment icons and layouts color
         RelativeLayout[] layoutList = {mMood0, mMood1, mMood2, mMood3, mMood4, mMood5, mMood6};
         ImageView[] iconList = {mCom0, mCom1, mCom2, mCom3, mCom4, mCom5, mCom6};
@@ -72,12 +73,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
             }
         }
 
-        // Remember the mood list
-        String json = getPreferences(MODE_PRIVATE).getString("moodList", null);
-        if(json != null){
-            Gson gson = new Gson();
-            mMoodList = gson.fromJson(json, ArrayList.class);
-        }
+
     }
 
     public void updateMoodLayout(int mood, RelativeLayout layout){
@@ -113,13 +109,4 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         Toast.makeText(this, mMoodList.get(buttonClicked).getComment(), Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    protected void onStop() {
-        Gson gson = new Gson();
-        String json = gson.toJson(mMoodList);
-        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        prefs.edit().putString("moodList", json).apply();
-
-        super.onStop();
-    }
 }
