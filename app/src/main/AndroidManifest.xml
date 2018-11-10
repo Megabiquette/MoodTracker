@@ -12,17 +12,13 @@
         <activity android:name=".controller.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.HistoryActivity"></activity>
+        <activity android:name=".controller.HistoryActivity">
 
-        <receiver android:name=".HistoryUpdateBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
-            </intent-filter>
-        </receiver>
+        </activity>
 
     </application>
 

@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.albanfontaine.moodtracker.HistoryUpdateBroadcastReceiver;
 import com.albanfontaine.moodtracker.OnSlidingTouchListener;
 import com.albanfontaine.moodtracker.R;
 import com.albanfontaine.moodtracker.model.Mood;
@@ -23,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -35,8 +35,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int mCurrentMood;
     private String mComment;
     private int mSoundNote;
+    private String mCurrentDate;
     private PendingIntent mPendingIntent;
     private AlarmManager mAlarmManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +87,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mComment = prefs.getString("comment", "");
         changeMood();
 
+        //Remember the date
+        if(prefs.contains("date")){
+            mCurrentDate = prefs.getString("date", "");
+        } else {
+            mCurrentDate = getTodaysDate();
+        }
+
         // Remember the mood list
         if(prefs.contains("moodList")){
             String moodList = prefs.getString("moodList", null);
@@ -101,7 +110,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mMoodList.add(new Mood(3, ""));
             mMoodList.add(new Mood(1, "bof"));
         }
-        updateHistory();
+
+        if(!mCurrentDate.equals(getTodaysDate()))
+            updateHistory();
+
+        // receiverSetup(); // Set up the alarm
     }
 
     @Override
@@ -171,16 +184,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlayer.start();
     }
 
-    public void updateHistory(){
-        Intent updateIntent = new Intent(this, HistoryUpdateBroadcastReceiver.class);
-        mPendingIntent = PendingIntent.getBroadcast(this, 0, updateIntent, 0);
-        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Calendar midnightCalendar = Calendar.getInstance();
-        midnightCalendar.set(Calendar.HOUR_OF_DAY, 0);
-        midnightCalendar.set(Calendar.MINUTE, 0);
-        midnightCalendar.set(Calendar.SECOND,0);
-        mAlarmManager.setInexactRepeating(AlarmManager.RTC,
-                midnightCalendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, mPendingIntent);
+    public String getTodaysDate(){
+        return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
     }
 
     @Override
@@ -190,9 +195,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         prefs.edit().putInt("currentMood", mCurrentMood).apply();
         prefs.edit().putString("comment", mComment).apply();
+        prefs.edit().putString("date", mCurrentDate).apply();
         Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
         prefs.edit().putString("moodList", gson.toJson(mMoodList, arrayType)).apply();
 
         super.onStop();
     }
+
+     public void updateHistory(){
+        mMoodList.remove(0);
+        mMoodList.add(new Mood(mCurrentMood, mComment));
+        mCurrentDate = getTodaysDate();
+        mCurrentMood = 3;
+        mComment = "";
+        changeMood();
+        SharedPreferences prefs = getPreferences(MODE_PRIVATE);
+        prefs.edit().remove("currentMood").apply();
+        prefs.edit().remove("comment").apply();
+        prefs.edit().remove("date").apply();
+
+    }
+
 }
