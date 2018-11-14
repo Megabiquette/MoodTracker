@@ -6,6 +6,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+// Handles slide up/down
 public class OnSlidingTouchListener implements View.OnTouchListener {
     private GestureDetector gestureDetector;
 
@@ -36,12 +37,13 @@ public class OnSlidingTouchListener implements View.OnTouchListener {
             try {
                 float deltaY = e2.getY() - e1.getY();
 
+                // If the movement is greater than the threshold, a slide is being made
                 if (Math.abs(deltaY) > SLIDE_THRESHOLD) {
                     if (deltaY > 0) {
-                        // the user made a sliding down gesture
+                        // The user made a sliding down gesture
                         return onSlideDown();
                     } else {
-                        // the user made a sliding up gesture
+                        // The user made a sliding up gesture
                         return onSlideUp();
                     }
                 }

@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String mComment;
     private int mSoundNote;
     private String mCurrentDate;
-    private PendingIntent mPendingIntent;
-    private AlarmManager mAlarmManager;
+    private Gson gson;
 
 
     @Override
@@ -49,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSmiley = findViewById(R.id.main_activity_smiley);
         mAddNote = findViewById(R.id.main_activity_add_note);
         mHistory = findViewById(R.id.main_activity_history);
+        gson = new Gson();
+
+        // Initializing the default mood
         mCurrentMood = 3;
         mComment = "";
         mSoundNote = R.raw.note3;
@@ -58,8 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAddNote.setTag(0);
         mHistory.setTag(1);
 
-        View myView = findViewById(R.id.main_activity_background);
-        myView.setOnTouchListener(new OnSlidingTouchListener(this) {
+        View screenView = findViewById(R.id.main_activity_background);
+
+        // Changes the current mood on slide up/down
+        screenView.setOnTouchListener(new OnSlidingTouchListener(this) {
             @Override
             public boolean onSlideUp() {
                 if (mCurrentMood < 4){
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        // Remember the mood of the day
+        // Remember the mood of the day from the SharedPreferences
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         mCurrentMood = prefs.getInt("currentMood", 3);
         mComment = prefs.getString("comment", "");
@@ -97,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Remember the mood list
         if(prefs.contains("moodList")){
             String moodList = prefs.getString("moodList", null);
-            Gson gson = new Gson();
             Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
             mMoodList = gson.fromJson(moodList, arrayType);
         }else{
@@ -111,10 +114,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mMoodList.add(new Mood(1, "bof"));
         }
 
+        // If it's a new day, update the history
         if(!mCurrentDate.equals(getTodaysDate()))
             updateHistory();
-
-        // receiverSetup(); // Set up the alarm
     }
 
     @Override
@@ -141,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             alert.show();
         } else if (buttonClicked == 1) {
             Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
-            Gson gson = new Gson();
             Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
             String moodList = gson.toJson(mMoodList, arrayType);
             historyActivityIntent.putExtra("moodList", moodList);
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaPlayer.start();
     }
 
+    // Returns today's date properly formatted as a String
     public String getTodaysDate(){
         return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
     }
@@ -191,8 +193,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStop() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
-        Gson gson = new Gson();
-
         prefs.edit().putInt("currentMood", mCurrentMood).apply();
         prefs.edit().putString("comment", mComment).apply();
         prefs.edit().putString("date", mCurrentDate).apply();
@@ -202,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStop();
     }
 
+    // Removes the oldest entry and adds the current mood to the moods history list
      public void updateHistory(){
         mMoodList.remove(0);
         mMoodList.add(new Mood(mCurrentMood, mComment));

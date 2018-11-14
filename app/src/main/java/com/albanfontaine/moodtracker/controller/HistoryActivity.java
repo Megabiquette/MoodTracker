@@ -33,12 +33,12 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView mCom5;
     private ImageView mCom6;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        // Gets the list from MainActivity
         String moodList = (String) getIntent().getExtras().get("moodList");
         Gson gson = new Gson();
         Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
@@ -59,8 +59,6 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         mCom5 = findViewById(R.id.activity_history_com_5);
         mCom6 = findViewById(R.id.activity_history_com_6);
 
-
-
         // Setting up the listeners, tags, visibility of comment icons and layouts color
         RelativeLayout[] layoutList = {mMood0, mMood1, mMood2, mMood3, mMood4, mMood5, mMood6};
         ImageView[] iconList = {mCom0, mCom1, mCom2, mCom3, mCom4, mCom5, mCom6};
@@ -72,12 +70,13 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
                 iconList[i].setVisibility(View.GONE);
             }
         }
-
-
     }
 
+    // Sets the layout according to the mood
     public void updateMoodLayout(int mood, RelativeLayout layout){
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) layout.getLayoutParams();
+
+        // Used to convert pixels to dp
         float d = getResources().getDisplayMetrics().density;
         switch (mood) {
             case 0:
@@ -105,6 +104,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        // Shows the comment of the mood according to the tag
         int buttonClicked = (int) v.getTag();
         Toast.makeText(this, mMoodList.get(buttonClicked).getComment(), Toast.LENGTH_LONG).show();
     }
