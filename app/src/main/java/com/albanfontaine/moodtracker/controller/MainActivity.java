@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStop() {
+        // Remembers the current mood
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         prefs.edit().putInt("currentMood", mCurrentMood).apply();
         prefs.edit().putString("comment", mComment).apply();
