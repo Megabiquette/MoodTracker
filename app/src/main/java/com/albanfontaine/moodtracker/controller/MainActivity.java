@@ -122,13 +122,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         int buttonClicked = (int) v.getTag();
-        if (buttonClicked == 0) {
+        if (buttonClicked == 0) { // Click on the "Add comment" button
             final EditText editText = new EditText(this);
             editText.setHint("Votre commentaire");
+            // If a comment was already added, show that comment and select if for easier modification
             if(!mComment.trim().equals("")){
                 editText.setText(mComment);
                 editText.setSelectAllOnFocus(true);
             }
+            // Building and displaying the AlertDialog for the comment
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
             alert.setTitle("Commentaire");
             alert.setMessage(mComment);
@@ -141,7 +143,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
             alert.setNegativeButton("Annuler", null);
             alert.show();
-        } else if (buttonClicked == 1) {
+        } else if (buttonClicked == 1) { // Click on the "Show history" button
+            // Starting the HistoryActivity, passing the moods list
             Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
             Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
             String moodList = gson.toJson(mMoodList, arrayType);
@@ -150,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    // Changing the background color, smiley image and playing the music note
+    // according to the mood
     private void changeMood() {
         switch (mCurrentMood) {
             case 0:
