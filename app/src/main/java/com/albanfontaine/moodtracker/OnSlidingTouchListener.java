@@ -10,7 +10,7 @@ import android.view.View;
 public class OnSlidingTouchListener implements View.OnTouchListener {
     private GestureDetector gestureDetector;
 
-    protected OnSlidingTouchListener(Context context){
+    protected OnSlidingTouchListener(Context context) {
         gestureDetector = new GestureDetector(context, new GestureListener());
     }
 
@@ -20,7 +20,7 @@ public class OnSlidingTouchListener implements View.OnTouchListener {
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
         private final String TAG = GestureListener.class.getSimpleName();
-        private static  final int SLIDE_THRESHOLD = 50;
+        private static final int SLIDE_THRESHOLD = 50;
 
         @Override
         public boolean onDown(MotionEvent e) {
@@ -55,6 +55,7 @@ public class OnSlidingTouchListener implements View.OnTouchListener {
             return false;
         }
     }
+
     public boolean onClick() {
         return false;
     }

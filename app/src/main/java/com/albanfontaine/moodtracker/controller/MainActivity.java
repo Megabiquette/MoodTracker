@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         screenView.setOnTouchListener(new OnSlidingTouchListener(this) {
             @Override
             public boolean onSlideUp() {
-                if (mCurrentMood < 4){
+                if (mCurrentMood < 4) {
                     mCurrentMood++;
                     changeMood();
                     playSound();
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public boolean onSlideDown() {
-                if (mCurrentMood > 0){
+                if (mCurrentMood > 0) {
                     mCurrentMood--;
                     changeMood();
                     playSound();
@@ -92,18 +92,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         changeMood();
 
         //Remember the date
-        if(prefs.contains("date")){
+        if (prefs.contains("date")) {
             mCurrentDate = prefs.getString("date", "");
         } else {
             mCurrentDate = getTodaysDate();
         }
 
         // Remember the mood list
-        if(prefs.contains("moodList")){
+        if (prefs.contains("moodList")) {
             String moodList = prefs.getString("moodList", null);
-            Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
+            Type arrayType = new TypeToken<ArrayList<Mood>>() {
+            }.getType();
             mMoodList = gson.fromJson(moodList, arrayType);
-        }else{
+        } else {
             mMoodList = new ArrayList<Mood>();
             mMoodList.add(new Mood(3, ""));
             mMoodList.add(new Mood(3, ""));
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         // If it's a new day, update the history
-        if(!mCurrentDate.equals(getTodaysDate()))
+        if (!mCurrentDate.equals(getTodaysDate()))
             updateHistory();
     }
 
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             final EditText editText = new EditText(this);
             editText.setHint("Votre commentaire");
             // If a comment was already added, show that comment and select if for easier modification
-            if(!mComment.trim().equals("")){
+            if (!mComment.trim().equals("")) {
                 editText.setText(mComment);
                 editText.setSelectAllOnFocus(true);
             }
@@ -146,7 +147,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (buttonClicked == 1) { // Click on the "Show history" button
             // Starting the HistoryActivity, passing the moods list
             Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
-            Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
+            Type arrayType = new TypeToken<ArrayList<Mood>>() {
+            }.getType();
             String moodList = gson.toJson(mMoodList, arrayType);
             historyActivityIntent.putExtra("moodList", moodList);
             startActivity(historyActivityIntent);
@@ -185,13 +187,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void playSound(){
+    public void playSound() {
         MediaPlayer mediaPlayer = MediaPlayer.create(this, mSoundNote);
         mediaPlayer.start();
     }
 
     // Returns today's date properly formatted as a String
-    public String getTodaysDate(){
+    public String getTodaysDate() {
         return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
     }
 
@@ -202,14 +204,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         prefs.edit().putInt("currentMood", mCurrentMood).apply();
         prefs.edit().putString("comment", mComment).apply();
         prefs.edit().putString("date", mCurrentDate).apply();
-        Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
+        Type arrayType = new TypeToken<ArrayList<Mood>>() {
+        }.getType();
         prefs.edit().putString("moodList", gson.toJson(mMoodList, arrayType)).apply();
 
         super.onStop();
     }
 
     // Removes the oldest entry and adds the current mood to the moods history list
-     public void updateHistory(){
+    public void updateHistory() {
         mMoodList.remove(0);
         mMoodList.add(new Mood(mCurrentMood, mComment));
         mCurrentDate = getTodaysDate();

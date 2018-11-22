@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-public class HistoryActivity extends AppCompatActivity implements View.OnClickListener{
+public class HistoryActivity extends AppCompatActivity implements View.OnClickListener {
     private ArrayList<Mood> mMoodList;
     private RelativeLayout mMood0;
     private RelativeLayout mMood1;
@@ -41,9 +41,11 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         // Gets the list from MainActivity
         String moodList = (String) getIntent().getExtras().get("moodList");
         Gson gson = new Gson();
-        Type arrayType = new TypeToken<ArrayList<Mood>>() {}.getType();
+        Type arrayType = new TypeToken<ArrayList<Mood>>() {
+        }.getType();
         mMoodList = gson.fromJson(moodList, arrayType);
 
+        // Setting up the 7 days past
         mMood0 = findViewById(R.id.activity_history_layout_O);
         mMood1 = findViewById(R.id.activity_history_layout_1);
         mMood2 = findViewById(R.id.activity_history_layout_2);
@@ -62,18 +64,18 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         // Setting up the listeners, tags, visibility of comment icons and layouts color
         RelativeLayout[] layoutList = {mMood0, mMood1, mMood2, mMood3, mMood4, mMood5, mMood6};
         ImageView[] iconList = {mCom0, mCom1, mCom2, mCom3, mCom4, mCom5, mCom6};
-        for(int i = 0; i < 7; i++){
+        for (int i = 0; i < 7; i++) {
             iconList[i].setOnClickListener(this);
             iconList[i].setTag(i);
             updateMoodLayout(mMoodList.get(i).getMood(), layoutList[i]);
-            if(mMoodList.get(i).getComment().trim().equals("")){
+            if (mMoodList.get(i).getComment().trim().equals("")) {
                 iconList[i].setVisibility(View.GONE);
             }
         }
     }
 
     // Sets the layout according to the mood
-    public void updateMoodLayout(int mood, RelativeLayout layout){
+    public void updateMoodLayout(int mood, RelativeLayout layout) {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) layout.getLayoutParams();
 
         // Used to convert pixels to dp
@@ -81,19 +83,19 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         switch (mood) {
             case 0:
                 layout.setBackgroundColor(getResources().getColor(R.color.faded_red));
-                params.setMarginEnd((int)(290*d));
+                params.setMarginEnd((int) (290 * d));
                 break;
             case 1:
                 layout.setBackgroundColor(getResources().getColor(R.color.warm_grey));
-                params.setMarginEnd((int)(225*d));
+                params.setMarginEnd((int) (225 * d));
                 break;
             case 2:
                 layout.setBackgroundColor(getResources().getColor(R.color.cornflower_blue_65));
-                params.setMarginEnd((int)(150*d));
+                params.setMarginEnd((int) (150 * d));
                 break;
             case 3:
                 layout.setBackgroundColor(getResources().getColor(R.color.light_sage));
-                params.setMarginEnd((int)(75*d));
+                params.setMarginEnd((int) (75 * d));
                 break;
             case 4:
                 layout.setBackgroundColor(getResources().getColor(R.color.banana_yellow));
