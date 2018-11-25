@@ -45,7 +45,7 @@ public class HistoryActivity extends AppCompatActivity implements View.OnClickLi
         }.getType();
         mMoodList = gson.fromJson(moodList, arrayType);
 
-        // Setting up the 7 days past
+        // Setting up the 7 past days
         mMood0 = findViewById(R.id.activity_history_layout_O);
         mMood1 = findViewById(R.id.activity_history_layout_1);
         mMood2 = findViewById(R.id.activity_history_layout_2);
